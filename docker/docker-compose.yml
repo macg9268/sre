@@ -1,0 +1,25 @@
+name: sre_api_python
+services:
+  api_python:
+    container_name: api_python
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+
+  prometheus:
+    container_name: prometheus
+    image: ubuntu/prometheus:3-24.04_stable
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
