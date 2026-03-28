@@ -43,8 +43,8 @@ services:
     image: datadog/agent:latest
     container_name: datadog
     environment:
-    - DD_API_KEY=your_datadog_api_key
-    - DD_SITE=datadoghq.com
+    - DD_API_KEY=${DD_API_KEY}
+    - DD_SITE=${DD_SITE}
     - DD_LOGS_ENABLED=true
     - DD_APM_ENABLED=true
     - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
