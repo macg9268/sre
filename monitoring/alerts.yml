@@ -8,3 +8,10 @@ groups:
   - alert: HighErrorRate
     expr: rate(http_requests_total{status="500"}[1m]) > 0.1
     for: 1m
+
+  - alert: HighJenkinsFailureRate
+  expr: (sum(rate(jenkins_job_builds_total{result="FAILURE"}[5m])) / sum(rate(jenkins_job_builds_total[5m]))
+  ) > 0.2
+  for: 10m
+
+  
