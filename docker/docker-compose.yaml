@@ -12,9 +12,6 @@ services:
            - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - sre_api_python_default
-
-name: sre_api_python
-services:
   api_python:
     container_name: api_python
     build:
@@ -22,9 +19,6 @@ services:
       dockerfile: docker/Dockerfile
     ports:
       - "8000:8000"
-
-name: sre_monitoring
-services:
   prometheus:
     container_name: prometheus
     image: ubuntu/prometheus:3-24.04_stable
