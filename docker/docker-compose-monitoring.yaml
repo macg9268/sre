@@ -1,15 +1,4 @@
-name: sre_api_python
-services:
-  api_python:
-    container_name: api_python
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    ports:
-      - "8000:8000"
-
 name: sre_monitoring
-
 services:
   prometheus:
     container_name: prometheus
@@ -18,6 +7,8 @@ services:
       - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    networks:
+    - sre_api_python_default
   grafana:
     container_name: grafana
     image: grafana/grafana
@@ -25,28 +16,6 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-  alertmanager:
-    image: prom/alertmanager:latest
-    container_name: alertmanager
-    volumes:
-    - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    command:
-    - "--config.file=/etc/alertmanager/alertmanager.yml"
-    ports:
-    - "9093:9093"
-
-  jenkins-agent:
-    build:
-      context: ..
-      dockerfile: Dockers/files/Dockerfile
-    container_name: jenkins-agent
-    ports:
-      - "2222:22"
-    volumes:
-           - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - sre_api_python_default
-
   datadog:
     image: datadog/agent:latest
     container_name: datadog
@@ -63,6 +32,10 @@ services:
     ports:
     - "8126:8126"  # APM
     - "8125:8125/udp"  # metrics
+    networks:
+    - sre_api_python_default
 
-volumes:
-  jenkins_home:
+networks:
+  sre_api_python_default:
+    driver: bridge
+    external: true

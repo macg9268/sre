@@ -1,0 +1,9 @@
+name: sre_api_python
+services:
+  api_python:
+    container_name: api_python
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
