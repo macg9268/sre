@@ -1,0 +1,45 @@
+name: sre_automation
+services:
+  jenkins:
+    container_name: jenkins-server
+    build:
+      context: .
+      dockerfile: files/Dockerfileserver
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+           - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - sre_api_python_default
+  api_python:
+    container_name: api_python
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+  prometheus:
+    container_name: prometheus
+    image: ubuntu/prometheus:3-24.04_stable
+    volumes:
+      - /monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+    - sre_api_python_default
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  jenkins_home:
+
+networks:
+  sre_api_python_default:
+    driver: bridge
+    external: true
