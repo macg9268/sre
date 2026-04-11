@@ -13,7 +13,6 @@ This project simulates a production-ready service with monitoring, logging, and 
 - Prometheus metrics
 
 
-
 ## Incident Scenarios
 1. High latency (/slow)
 2. Error spike (/error)

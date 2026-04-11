@@ -10,8 +10,7 @@ groups:
     for: 1m
 
   - alert: HighJenkinsFailureRate
-  expr: (sum(rate(jenkins_job_builds_total{result="FAILURE"}[5m])) / sum(rate(jenkins_job_builds_total[5m]))
-  ) > 0.2
+  expr: (sum(rate(jenkins_job_builds_total{result="FAILURE"}[5m])) / sum(rate(jenkins_job_builds_total[5m])) > 0.2
   for: 10m
 
   
